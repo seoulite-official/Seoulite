@@ -1,7 +1,5 @@
 import { getAdminUser } from '../../lib/auth'
-import { PrismaClient } from '@/app/generated/prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '@/app/lib/prisma'
 
 export default async function AdminIssuesPage() {
   // Check authentication and authorization

@@ -1,28 +1,19 @@
 import { PrismaClient } from '@/app/generated/prisma/client'
+import { PrismaLibSql } from '@prisma/adapter-libsql'
 
 let prisma: PrismaClient
 
 if (typeof window === 'undefined') {
   // In production, create a new instance or use a global one
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
-  })
+  const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! })
+  prisma = new PrismaClient({ adapter })
 } else {
   // In development, use a global instance to prevent multiple instances
   // @ts-ignore
   if (!global.__prisma) {
+    const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! })
     // @ts-ignore
-    global.__prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.DATABASE_URL
-        }
-      }
-    })
+    global.__prisma = new PrismaClient({ adapter })
   }
   // @ts-ignore
   prisma = global.__prisma

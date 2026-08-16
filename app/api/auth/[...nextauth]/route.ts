@@ -1,9 +1,7 @@
 import { Auth, type AuthConfig } from "@auth/core"
 import Credentials from "@auth/core/providers/credentials"
-import { PrismaClient } from "@/app/generated/prisma"
+import prisma from "@/app/lib/prisma"
 import bcrypt from "bcryptjs"
-
-const prisma = new PrismaClient()
 
 export const authOptions: AuthConfig = {
   providers: [
