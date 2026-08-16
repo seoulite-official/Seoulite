@@ -1,27 +1,34 @@
-import { Auth, type AuthConfig } from "@auth/core"
-import Credentials from "@auth/core/providers/credentials"
+import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials"
 import prisma from "@/app/lib/prisma"
 import bcrypt from "bcryptjs"
 
-export const authOptions: AuthConfig = {
+const { handlers } = NextAuth({
   providers: [
     Credentials({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: {
+          label: "Email",
+          type: "email",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
       },
-      authorize: async (credentials) => {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string }
+          where: {
+            email: credentials.email as string,
+          },
         })
 
         if (!user) {
-          // Return null to avoid revealing whether an email exists
           return null
         }
 
@@ -34,59 +41,44 @@ export const authOptions: AuthConfig = {
           return null
         }
 
-        // Return user object without password
-        const { password: _, ...userWithoutPassword } = user
-        return userWithoutPassword
-      }
-    })
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        }
+      },
+    }),
   ],
+
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
-  cookies: {
-    sessionToken: {
-      name: "__Secure-next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        // Secure in production
-        secure: process.env.NODE_ENV === "production"
-      }
-    }
-  },
+
   pages: {
     signIn: "/admin/login",
-    error: "/admin/login"
   },
+
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id
-        token.email = user.email
-        token.name = user.name
         token.role = user.role
       }
+
       return token
     },
-    async session({ session, token }: any) {
-      if (token) {
+
+    async session({ session, token }) {
+      if (session.user) {
         session.user.id = token.id as string
-        session.user.email = token.email as string
-        session.user.name = token.name as string
         session.user.role = token.role as string
       }
+
       return session
-    }
-  }
-}
+    },
+  },
+})
 
-// Create a handler function for Next.js
-export async function GET(request: Request) {
-  return Auth(request, authOptions)
-}
-
-export async function POST(request: Request) {
-  return Auth(request, authOptions)
-}
+export const { GET, POST } = handlers

@@ -9,13 +9,13 @@ if (typeof window === 'undefined') {
   prisma = new PrismaClient({ adapter })
 } else {
   // In development, use a global instance to prevent multiple instances
-  // @ts-ignore
+  // @ts-expect-error - __prisma is a custom global property
   if (!global.__prisma) {
     const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! })
-    // @ts-ignore
+    // @ts-expect-error - __prisma is a custom global property
     global.__prisma = new PrismaClient({ adapter })
   }
-  // @ts-ignore
+  // @ts-expect-error - __prisma is a custom global property
   prisma = global.__prisma
 }
 

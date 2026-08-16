@@ -1,47 +1,40 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError(null)
+  setIsLoading(true)
 
-    try {
-      const response = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          redirect: false,
-        }),
-        credentials: "include",
-      })
+  try {
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
 
-      const result = await response.json()
-
-      if (result.error) {
-        setError("Invalid email or password")
-      } else {
-        // Sign in successful, redirect to admin dashboard
-        window.location.href = "/admin"
-      }
-    } catch (err) {
-      setError("An error occurred during login")
-    } finally {
-      setIsLoading(false)
+    if (result?.error) {
+      setError("Invalid email or password")
+    } else {
+      router.push("/admin")
+      router.refresh()
     }
+  } catch {
+    setError("An error occurred during login")
+  } finally {
+    setIsLoading(false)
   }
-
+}
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-6">

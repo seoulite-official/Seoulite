@@ -1,4 +1,5 @@
 import prisma from '@/app/lib/prisma'
+import Link from 'next/link'
 
 export default async function AdminIssueDetailPage({
   params,
@@ -21,12 +22,12 @@ export default async function AdminIssueDetailPage({
           <h2 className="text-2xl font-bold text-gray-900">Issue Not Found</h2>
           <p className="text-gray-600">The requested issue does not exist.</p>
           <div className="mt-6">
-            <a
-              href="/admin/issues"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              ← Back to all issues
-            </a>
+            <Link
+  href="/admin/issues"
+  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+>
+  ← Back to all issues
+</Link>
           </div>
         </div>
       </div>
@@ -71,12 +72,12 @@ export default async function AdminIssueDetailPage({
             <p className="mb-2"><strong>Description:</strong> {issue.description || '(Not set)'}</p>
             <p className="mb-2"><strong>Status:</strong> {issue.published ? 'Published' : 'Draft'}</p>
             <div className="mt-4">
-              <a
-                href="/admin/issues"
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                ← Back to all issues
-              </a>
+              <Link
+  href="/admin/issues"
+  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+>
+  ← Back to all issues
+</Link>
             </div>
           </div>
         </div>

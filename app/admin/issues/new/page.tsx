@@ -1,5 +1,6 @@
 import { getAdminUser } from '@/app/lib/auth'
 import prisma from '@/app/lib/prisma'
+import Link from 'next/link'
 
 export default async function NewIssuePage() {
   // Check authentication and authorization
@@ -22,12 +23,12 @@ export default async function NewIssuePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
           <h1 className="text-2xl font-bold text-gray-900">Create New Issue</h1>
           <p className="mt-4">Form would go here.</p>
-          <a
-            href="/admin/issues"
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            ← Back to all issues
-          </a>
+          <Link
+  href="/admin/issues"
+  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+>
+  ← Back to all issues
+</Link>
         </div>
       </header>
     </div>

@@ -1,5 +1,6 @@
 import { getAdminUser } from '../../lib/auth'
 import prisma from '@/app/lib/prisma'
+import Link from 'next/link'
 
 export default async function AdminIssuesPage() {
   // Check authentication and authorization
@@ -50,12 +51,12 @@ export default async function AdminIssuesPage() {
         <div className="bg-white border border-gray-200 rounded-md p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-gray-900">All Issues</h2>
-            <a
-              href="/admin/issues/new"
-              className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              + New Issue
-            </a>
+            <Link
+  href="/admin/issues/new"
+  className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2"
+>
+  + New Issue
+</Link>
           </div>
 
           {issues.length === 0 ? (
