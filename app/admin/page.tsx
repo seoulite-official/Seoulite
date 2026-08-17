@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AdminPage() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -54,6 +56,19 @@ export default function AdminPage() {
               <p className="mt-1 text-sm text-gray-600">
                 Database: <span className="font-medium text-blue-600">Prisma/SQLite</span>
               </p>
+            </div>
+
+            <div className="bg-gray-50 p-4 border rounded-md">
+              <h3 className="font-medium text-gray-900">Issue Management</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Create, edit, and publish issues.
+              </p>
+              <Link
+                href="/admin/issues"
+                className="mt-3 inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+              >
+                Manage Issues
+              </Link>
             </div>
           </div>
         </div>

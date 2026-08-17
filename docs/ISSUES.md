@@ -46,3 +46,7 @@ Decisions that should not be re-litigated each session. Add one line per decisio
 - **2026-08-12** — Assets convention: established `public/issues/[issue-slug]/` for cover images and `public/issues/[issue-slug]/articles/` for article thumbnails. Reason: organized, scalable asset storage that aligns with issue-based structure.
 - **2026-08-12** — Navigation update: added "Issues" link to main header navigation. Reason: makes the issue archive accessible from site header.
 - **2026-08-14** — Database foundation: established Prisma ORM with SQLite as persistent source of truth for issue data. Reason: replaces temporary demo data with production-ready database schema supporting Issue and User models, keeping binary files external.
+
+## Resolved issues
+
+- **2026-08-17** — Issuu integration: Added optional  field to Issue model to store Issuu publication URLs. Updated admin forms, API routes, and public issue page to handle Issuu magazine displays. Implemented iframe-based embed for Issuu publications.

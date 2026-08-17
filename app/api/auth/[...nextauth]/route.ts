@@ -3,6 +3,24 @@ import Credentials from "next-auth/providers/credentials"
 import prisma from "@/app/lib/prisma"
 import bcrypt from "bcryptjs"
 
+declare module "next-auth" {
+  interface User {
+    id: string
+    email: string
+    name?: string | null
+    role?: string
+  }
+
+  interface Session {
+    user: {
+      id: string
+      email: string
+      name?: string | null
+      role?: string
+    }
+  }
+}
+
 const { handlers } = NextAuth({
   providers: [
     Credentials({

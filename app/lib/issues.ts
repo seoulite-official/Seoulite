@@ -49,6 +49,8 @@ const demoArticles: Record<string, Article[]> = {
   ]
 };
 
+export { demoArticles };
+
 export const allIssues: Issue[] = [
   {
     slug: "issue-000-demo",

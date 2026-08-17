@@ -17,16 +17,13 @@ export const generateStaticParams = async () => {
   return demoArticles;
 };
 
-export default function ArticlePage({
-  params }: {
-    params: {
-      issue: string;
-      article: string
-    }
-  }) {
-  const article = getArticleBySlug(params.issue, params.article);
+export default async function ArticlePage(
+  { params }: { params: Promise<{ issue: string; article: string }> }
+) {
+  const { issue, article } = await params;
+  const articleData = await getArticleBySlug(issue, article);
 
-  if (!article) {
+  if (!articleData) {
     notFound();
   }
 
@@ -34,21 +31,21 @@ export default function ArticlePage({
   // we'll just show the article directly. The issue context is in the URL.
 
   return (
-    <Section id={`article-${article.slug}`}>
+    <Section id={`article-${articleData.slug}`}>
       <Container>
         <div className="mb-8">
           <Link
-            href={`/issues/${params.issue}`}
+            href={`/issues/${issue}`}
             className="inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
-            ← Back to Issue {params.issue.toUpperCase()}
+            ← Back to Issue {issue.toUpperCase()}
           </Link>
         </div>
 
-        {article.image ? (
+        {articleData.image ? (
           <img
-            src={article.image}
-            alt={article.title}
+            src={articleData.image}
+            alt={articleData.title}
             className="w-full h-64 object-cover rounded-xl mb-8"
           />
         ) : (
@@ -58,27 +55,27 @@ export default function ArticlePage({
         )}
 
         <h1 className="mb-6 text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          {article.title}
+          {articleData.title}
         </h1>
         <div className="mb-6 flex flex-wrap gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-          <span>{article.category}</span>
+          <span>{articleData.category}</span>
           <span>•</span>
-          <span>{article.author}</span>
+          <span>{articleData.author}</span>
         </div>
         <p className="mb-8 text-lg text-zinc-600 dark:text-zinc-300">
-          {article.excerpt}
+          {articleData.excerpt}
         </p>
 
         <div className="prose prose-zinc max-w-none">
-          <p>{article.contentPlaceholder}</p>
+          <p>{articleData.contentPlaceholder}</p>
         </div>
 
         <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
           <Link
-            href={`/issues/${params.issue}`}
+            href={`/issues/${issue}`}
             className="inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
-            ← Back to Issue {params.issue.toUpperCase()}
+            ← Back to Issue {issue.toUpperCase()}
           </Link>
         </div>
       </Container>

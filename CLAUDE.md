@@ -225,6 +225,7 @@ These files and conventions exist for a reason — change only when required:
 
 **Current Schema:**
 - **Issue Model:** Stores issue metadata with storage keys for cover images and publication PDFs (actual files stored externally)
+- **Issuu Integration:** Added `issuuUrl` field to store Issuu publication URLs
 - **User Model:** Foundation for editorial/admin accounts (authentication implemented)
 - **Storage Approach:** Binary files (PDFs, images) stored externally; database stores only metadata and storage keys
 
@@ -246,6 +247,7 @@ These files and conventions exist for a reason — change only when required:
 - Authentication implementation (COMPLETE)
 - Admin interface for issue management
 - File upload handling for covers/publications
+- Issuu integration for magazine publications (COMPLETE)
 - Production database migration (PostgreSQL deferred until deployment provider chosen)
 
 ---
