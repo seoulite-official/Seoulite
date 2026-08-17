@@ -33,7 +33,17 @@ The following sections will be completed once the user provides the design descr
 
 ### Responsive breakpoints
 - _Pending._
+## Visual References
 
+The `/design` directory contains the original hand-drawn interface designs provided by the user.
+
+These images are the primary visual references for the Seoulite website. Future UI implementation should use these references to guide the overall layout, visual hierarchy, spacing, typography, navigation, cards, imagery, and other interface elements.
+
+The designs do not need to be reproduced pixel-for-pixel. If responsive behavior, accessibility, technical constraints, or existing backend functionality require adjustments, preserve the overall visual intent and composition of the designs.
+
+Before making significant UI changes, inspect the relevant image in `/design` and compare the implementation against it.
+
+The existing backend should not be unnecessarily changed simply to reproduce the visual design. However, frontend structure may be changed when necessary to achieve the intended design.
 ---
 
 ## Working notes
