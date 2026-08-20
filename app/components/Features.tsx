@@ -1,31 +1,25 @@
 import { featuresContent } from "../lib/content";
-import { Card } from "./Card";
 import { Section } from "./Section";
-import { Container } from "./Container";
-
-// Features displays a grid of feature cards.
-// Content comes from lib/content.ts.
 
 export function Features() {
   return (
-    <Section className="bg-white dark:bg-zinc-900">
-      <Container>
-        <h2 className="mb-12 text-3xl font-bold text-center text-zinc-900 dark:text-zinc-100">
-          What makes Seoulite special
+    <Section className="bg-white">
+      <div className="mb-10 max-w-2xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8a8a8a]">
+          The magazine
+        </p>
+        <h2 className="mt-3 font-serif text-3xl font-bold text-[#111111] sm:text-4xl">
+          What you will find in Seoulite
         </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featuresContent.map((feature, index) => (
-            <Card key={index}>
-              <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                {feature.title}
-              </h3>
-              <p className="text-zinc-600 dark:text-zinc-300">
-                {feature.description}
-              </p>
-            </Card>
-          ))}
-        </div>
-      </Container>
+      </div>
+      <div className="grid gap-10 sm:grid-cols-3">
+        {featuresContent.map((feature) => (
+          <div key={feature.title}>
+            <h3 className="font-serif text-xl font-bold text-[#111111]">{feature.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[#555555]">{feature.description}</p>
+          </div>
+        ))}
+      </div>
     </Section>
   );
 }

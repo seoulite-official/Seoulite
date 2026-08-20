@@ -3,7 +3,10 @@
 // All content here is clearly marked as placeholder/demo and will be replaced
 // with real Seoulite issues when the user provides them.
 
+import type { Issue } from "@/app/types/issue"
+export type { Issue } from "@/app/types/issue"
 
+// Article is defined locally in this file for the demo data
 export type Article = {
   slug: string;
   title: string;
@@ -14,16 +17,6 @@ export type Article = {
   // Content will eventually be MDX or separate files; for now we'll use a simple string placeholder
   // that can be replaced with real content later
   contentPlaceholder: string;
-};
-
-export type Issue = {
-  slug: string;
-  number: number;
-  date: string;
-  title?: string;
-  description: string;
-  coverImage?: string;
-  articles: Article[];
 };
 
 const demoArticles: Record<string, Article[]> = {
@@ -53,13 +46,26 @@ export { demoArticles };
 
 export const allIssues: Issue[] = [
   {
+    id: "demo-issue-000",
     slug: "issue-000-demo",
     number: 0,
     date: "2024-01-01",
     title: "Demo Issue",
     description: "This is a demonstration issue to verify the issue/archive infrastructure works correctly. Replace with real Seoulite issues.",
-    coverImage: "issues/issue-000-demo/cover.svg",
-    articles: demoArticles["issue-000-demo"]
+    coverImageKey: "issues/issue-000-demo/cover.svg",
+    coverImageOriginalName: "cover.svg",
+    coverImageSize: 1000,
+    coverImageMimeType: "image/svg+xml",
+    coverImageUploadedAt: new Date("2024-01-01"),
+    publicationKey: null,
+    publicationOriginalName: null,
+    publicationSize: null,
+    publicationMimeType: null,
+    publicationUploadedAt: null,
+    published: true,
+    publishedAt: new Date("2024-01-01"),
+    createdAt: new Date("2024-01-01"),
+    updatedAt: new Date("2024-01-01"),
   }
 ];
 
@@ -79,5 +85,7 @@ export function getArticleBySlug(
 ): Article | undefined {
   const issue = getIssueBySlug(issueSlug);
   if (!issue) return undefined;
-  return issue.articles.find((article) => article.slug === articleSlug);
+  // Since we don't have articles in the Issue type yet, we use the demoArticles
+  const articles = demoArticles[issueSlug] || [];
+  return articles.find((article) => article.slug === articleSlug);
 }

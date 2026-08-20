@@ -2,8 +2,6 @@ import type { ReactNode } from "react";
 import { Container } from "./Container";
 import { cn } from "../lib/cn";
 
-// Section provides vertical rhythm (top/bottom padding) for major page areas.
-// id makes the section anchor-linkable.
 type SectionProps = {
   id?: string;
   children: ReactNode;
@@ -18,7 +16,7 @@ export function Section({
   contained = true,
 }: SectionProps) {
   return (
-    <section id={id} className={cn("py-16 sm:py-20 lg:py-24", className)}>
+    <section id={id} className={cn("py-14 sm:py-16 lg:py-20", className)}>
       {contained ? <Container>{children}</Container> : children}
     </section>
   );

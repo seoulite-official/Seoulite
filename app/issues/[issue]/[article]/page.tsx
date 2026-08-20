@@ -1,81 +1,68 @@
 import { Section } from "../../../components/Section";
 import { Container } from "../../../components/Container";
 import Link from "next/link";
-import { ButtonLink } from "../../../components/Button";
-import { getArticleBySlug } from "../../../lib/issues";
+import { getPublishedIssueBySlug, getArticleBySlug } from "@/app/lib/server/issues";
 import { notFound } from "next/navigation";
-import { cn } from "../../../lib/cn";
+import { articleImageUrl, formatDisplayDate } from "@/app/lib/media";
+import { demoArticles } from "@/app/lib/issues";
 
-export const generateStaticParams = async () => {
-  // In a real app, this would fetch from a CMS or database
-  // For now, we return the demo article(s) from the demo issue
-  const demoIssueSlug = "issue-000-demo";
-  const demoArticles = [
-    { params: { issue: demoIssueSlug, article: "welcome-note" } },
-    { params: { issue: demoIssueSlug, article: "how-it-works" } }
-  ];
-  return demoArticles;
-};
+export const dynamic = "force-dynamic";
 
-export default async function ArticlePage(
-  { params }: { params: Promise<{ issue: string; article: string }> }
-) {
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ issue: string; article: string }>;
+}) {
   const { issue, article } = await params;
-  const articleData = await getArticleBySlug(issue, article);
+  const demo = demoArticles[issue]?.find((item) => item.slug === article);
+  const articleData = demo ?? (await getArticleBySlug(issue, article));
+  const issueData = await getPublishedIssueBySlug(issue);
 
   if (!articleData) {
     notFound();
   }
 
-  // We could fetch the issue for breadcrumbs/context, but for minimal infrastructure
-  // we'll just show the article directly. The issue context is in the URL.
+  const image = articleImageUrl(articleData.image);
 
   return (
-    <Section id={`article-${articleData.slug}`}>
-      <Container>
-        <div className="mb-8">
-          <Link
-            href={`/issues/${issue}`}
-            className="inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300"
-          >
-            ← Back to Issue {issue.toUpperCase()}
-          </Link>
-        </div>
+    <Section id={`article-${articleData.slug}`} className="bg-white">
+      <Container className="max-w-3xl">
+        <Link
+          href={`/issues/${issue}`}
+          className="text-sm text-[#8a8a8a] hover:text-[#111111]"
+        >
+          ← Back to {issueData ? issueData.title || `Issue ${issueData.number}` : "issue"}
+        </Link>
 
-        {articleData.image ? (
-          <img
-            src={articleData.image}
-            alt={articleData.title}
-            className="w-full h-64 object-cover rounded-xl mb-8"
-          />
+        {issueData ? (
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#8a8a8a]">
+            Issue {issueData.number} · {formatDisplayDate(issueData.date)}
+          </p>
+        ) : null}
+
+        <h1 className="mt-4 font-serif text-4xl font-bold leading-tight text-[#111111] sm:text-5xl">
+          {articleData.title}
+        </h1>
+        <p className="mt-5 text-sm text-[#8a8a8a]">
+          {articleData.category} · {articleData.author}
+        </p>
+
+        {image ? (
+          <img src={image} alt="" className="mt-10 w-full object-cover" />
         ) : (
-          <div className="w-full h-64 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center rounded-xl mb-8">
-            <span className="text-zinc-400 dark:text-zinc-500">[Article Image]</span>
+          <div className="mt-10 flex h-72 items-center justify-center bg-zinc-100 font-serif text-4xl text-zinc-400">
+            Seoulite
           </div>
         )}
 
-        <h1 className="mb-6 text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          {articleData.title}
-        </h1>
-        <div className="mb-6 flex flex-wrap gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-          <span>{articleData.category}</span>
-          <span>•</span>
-          <span>{articleData.author}</span>
-        </div>
-        <p className="mb-8 text-lg text-zinc-600 dark:text-zinc-300">
-          {articleData.excerpt}
-        </p>
-
-        <div className="prose prose-zinc max-w-none">
+        <p className="mt-10 text-lg leading-relaxed text-[#333333]">{articleData.excerpt}</p>
+        <div className="mt-8 space-y-6 text-base leading-relaxed text-[#444444]">
           <p>{articleData.contentPlaceholder}</p>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-          <Link
-            href={`/issues/${issue}`}
-            className="inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300"
-          >
-            ← Back to Issue {issue.toUpperCase()}
+        <div className="mt-14 border-t border-zinc-200 pt-8">
+          <Link href={`/issues/${issue}`} className="text-sm text-[#8a8a8a] hover:text-[#111111]">
+            ← Back to issue
           </Link>
         </div>
       </Container>

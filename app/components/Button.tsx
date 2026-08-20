@@ -2,19 +2,16 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "../lib/cn";
 
-// Button supports two styles (primary / secondary) and can render as a link or a button.
-// Visual styling is intentionally neutral so the final design can override it easily.
-
-type Variant = "primary" | "secondary";
+type Variant = "primary" | "secondary" | "inverted";
 
 const base =
-  "inline-flex items-center justify-center rounded-full px-5 h-11 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-500";
+  "inline-flex items-center justify-center rounded-md px-8 h-11 text-sm font-semibold tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#111111]";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100",
+  primary: "bg-[#111111] text-white hover:bg-black",
   secondary:
-    "border border-zinc-300 text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800",
+    "border border-[#111111] bg-white text-[#111111] hover:bg-[#111111] hover:text-white",
+  inverted: "bg-white text-[#111111] hover:bg-zinc-100",
 };
 
 type ButtonProps = ComponentPropsWithoutRef<"button"> & {
@@ -30,10 +27,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   return (
-    <button
-      className={cn(base, variants[variant], className)}
-      {...rest}
-    >
+    <button className={cn(base, variants[variant], className)} {...rest}>
       {children}
     </button>
   );

@@ -1,34 +1,38 @@
-// Placeholder content for Seoulite.
-// Replace this with real content when the design description is provided.
-
 export type Feature = {
   title: string;
   description: string;
 };
 
 export const heroContent = {
-  eyebrow: "Welcome to Seoulite",
-  title: "A clean foundation ready for your design",
+  eyebrow: "Heading here",
+  title: "Hot Takes & Bold Opinions: The Stories You Can't Ignore",
   subtitle:
-    "This is a temporary placeholder section. Once you provide the final visual design, we will replace this text and styling without changing the structure.",
-  primaryCta: { label: "Get started", href: "/about" },
-  secondaryCta: { label: "Learn more", href: "/about" },
+    "Seoulite is a student-run journal of culture, campus life, and the city — essays, photography, and the conversations our community is having now.",
+  primaryCta: { label: "Check Now", href: "/issues" },
+  secondaryCta: { label: "About Us", href: "/about" },
 } as const;
 
 export const featuresContent: Feature[] = [
   {
-    title: "Modular components",
+    title: "Student voices",
     description:
-      "Reusable building blocks live in app/components so changes stay isolated.",
+      "Essays and reporting written by the people living this city and this campus — not from a distance.",
   },
   {
-    title: "Data-driven content",
+    title: "Print and digital",
     description:
-      "Text and links live in app/lib so visuals can be restyled without editing copy.",
+      "Each issue is designed as a magazine you can read on the site or download as a full PDF.",
   },
   {
-    title: "Responsive by default",
+    title: "An archive that grows",
     description:
-      "Layouts use Tailwind utilities and work on mobile, tablet, and desktop.",
+      "Past issues stay online so new readers can find the stories that still matter.",
   },
 ];
+
+export const fallbackCardImages = [
+  "/design/E734FDEF-D4BD-4664-93C9-E956780199DB.JPG",
+  "/design/mockup.jpg",
+  "/design/sketch.jpg",
+  "/design/banner.jpg",
+] as const;

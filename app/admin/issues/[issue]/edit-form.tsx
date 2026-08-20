@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Issue } from '@/app/types/issue'
 
-type Props = { issue: Issue & { issuuUrl?: string | null } }
+type Props = { issue: Issue }
 
 export default function EditForm({ issue }: Props) {
   const router = useRouter()
@@ -15,7 +15,6 @@ export default function EditForm({ issue }: Props) {
     date: issue.date,
     published: issue.published,
     description: issue.description ?? '',
-    issuuUrl: issue.issuuUrl ?? '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -161,21 +160,7 @@ export default function EditForm({ issue }: Props) {
           </label>
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="issuuUrl" className="block text-sm font-medium text-gray-700">
-            Issuu Publication URL
-          </label>
-          <input
-            id="issuuUrl"
-            type="url"
-            value={formData.issuuUrl}
-            onChange={(e) => setFormData({ ...formData, issuuUrl: e.target.value })}
-            className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            disabled={isSubmitting}
-            placeholder="https://issuu.com/your-publication"
-          />
-        </div>
-
+        
         <div className="flex items-center justify-between">
           <button
             type="submit"

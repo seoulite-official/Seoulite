@@ -50,3 +50,4 @@ Decisions that should not be re-litigated each session. Add one line per decisio
 ## Resolved issues
 
 - **2026-08-17** — Issuu integration: Added optional  field to Issue model to store Issuu publication URLs. Updated admin forms, API routes, and public issue page to handle Issuu magazine displays. Implemented iframe-based embed for Issuu publications.
+- **2026-08-18** — Issuu removal: Removed Issuu integration completely. Removed issuuUrl field from Issue model, updated API routes, admin forms, and issue pages to use direct PDF publication links instead.

@@ -3,7 +3,7 @@ export type Issue = {
   slug: string
   number: number
   title: string | null
-  description?: string
+  description: string
   date: string
   published: boolean
   publishedAt?: Date | null
@@ -19,7 +19,6 @@ export type Issue = {
   publicationSize?: number | null
   publicationMimeType?: string | null
   publicationUploadedAt?: Date | null
-  issuuUrl?: string | null
 }
 
 export type IssueForm = {
@@ -28,5 +27,4 @@ export type IssueForm = {
   number: number
   date: string
   published?: boolean
-  issuuUrl?: string
 }

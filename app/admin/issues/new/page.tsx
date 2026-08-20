@@ -11,8 +11,7 @@ export default function NewIssuePage() {
     title: '',
     number: 0,
     date: '',
-    published: false,
-    issuuUrl: ''
+    published: false
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -133,20 +132,6 @@ export default function NewIssuePage() {
             <span className="checkbox-mark checkbox-primary"></span>
             <span className="ml-2">Publish immediately</span>
           </label>
-        </div>
-
-        <div className="form-control mb-4">
-          <label className="label">
-            <span className="label-text">Issuu Publication URL</span>
-          </label>
-          <input
-            type="url"
-            className="input input-bordered"
-            value={formData.issuuUrl}
-            onChange={(e) => setFormData({...formData, issuuUrl: e.target.value})}
-            disabled={isLoading}
-            placeholder="https://issuu.com/your-publication"
-          />
         </div>
 
         <div className="form-control">

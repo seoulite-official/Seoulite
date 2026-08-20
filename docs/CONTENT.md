@@ -40,12 +40,12 @@ These strings are intentionally temporary. Do **not** treat them as final copy.
 
 ### Issues Archive (NEW)
 - **Issue archive page:** `/issues` - Lists all published Seoulite issues
-- **Individual issue page:** `/issues/[issue-slug]` - Shows issue metadata, article list, and Issuu publication (if available)
+- **Individual issue page:** `/issues/[issue-slug]` - Shows issue metadata, article list, and publication PDF link (if available)
 - **Individual article page:** `/issues/[issue-slug]/[article-slug]` - Shows full article content
 - **Data location:** Issue and article data structures defined in `app/lib/issues.ts`
 - **Demo data:** Currently contains one demo issue (Issue 000) with two demo articles to verify the infrastructure works
 - **Real content:** Will be replaced when the user provides actual Seoulite issues and articles
-- **Issuu Integration:** Each issue can optionally store an Issuu publication URL to display the full magazine
+- **Publication Integration:** Each issue can optionally store a publication PDF URL to display the full magazine
 
 ---
 
