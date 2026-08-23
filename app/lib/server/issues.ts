@@ -1,5 +1,6 @@
 import prisma from '@/app/lib/prisma'
 import type { Issue } from '@/app/lib/issues'
+import type { Prisma } from '@/app/generated/prisma'
 
 export const getIssues = async (): Promise<Issue[]> => {
   return await prisma.issue.findMany({
@@ -35,11 +36,11 @@ export const getPublishedIssueBySlug = async (slug: string): Promise<Issue | nul
   })
 }
 
-export const createIssue = async (data: any) => {
+export const createIssue = async (data: Prisma.IssueCreateInput) => {
   return await prisma.issue.create({ data })
 }
 
-export const updateIssue = async (slug: string, data: any) => {
+export const updateIssue = async (slug: string, data: Prisma.IssueUpdateInput) => {
   return await prisma.issue.update({ where: { slug }, data })
 }
 

@@ -44,6 +44,7 @@ model Issue {
 
 
 model User {
+  active      Boolean @default(true)
   // Existing fields remain
   // Existing fields remain
   // Existing fields remain
@@ -56,6 +57,16 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([email])
+}
+
+model Invitation {
+  id          String   @id @default(uuid())
+  email       String
+  role        String
+  tokenHash   String
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
 }
 
 model ContactMessage {

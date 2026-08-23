@@ -3,6 +3,7 @@ import { getIssues } from '@/app/lib/server/issues'
 import { createIssue } from '@/app/lib/server/issues'
 import fs from 'fs/promises'
 import path from 'path'
+import type { Prisma } from '@/app/generated/prisma'
 
 /**
  * GET all issues (admin endpoint).
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
   // Use the native FormData API – works with NextRequest in the App Router.
   const form = await request.formData()
 
-  const issueData: any = {}
+  const issueData: Record<string, unknown> = {}
 
   // Process all text fields first.
   for (const [key, value] of form.entries()) {
@@ -84,7 +85,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const issue = await createIssue(issueData)
+    const issue = await createIssue(issueData as Prisma.IssueCreateInput)
     return NextResponse.json(issue, { status: 201 })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'

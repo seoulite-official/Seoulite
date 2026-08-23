@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS "Invitation_email_key";

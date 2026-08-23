@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { getIssueBySlug, updateIssue, deleteIssue } from '@/app/lib/server/issues'
 import fs from 'fs/promises'
 import path from 'path'
+import type { Prisma } from '@/app/generated/prisma'
 
 type MultipartFields = Record<string, string | string[]>
 
@@ -43,7 +44,7 @@ export async function PUT(
   const { issue: slug } = await params
   const form = await request.formData()
 
-  const issueData: any = {}
+  const issueData: Record<string, unknown> = {}
 
   // Process all text fields first.
   for (const [key, value] of form.entries()) {
@@ -95,7 +96,7 @@ export async function PUT(
   }
 
   try {
-    const updatedIssue = await updateIssue(slug, issueData)
+    const updatedIssue = await updateIssue(slug, issueData as Prisma.IssueUpdateInput)
     return NextResponse.json(updatedIssue)
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'

@@ -21,7 +21,7 @@ declare module "next-auth" {
   }
 }
 
-const { handlers } = NextAuth({
+const { handlers, auth } = NextAuth({
   providers: [
     Credentials({
       name: "Credentials",
@@ -47,6 +47,11 @@ const { handlers } = NextAuth({
         })
 
         if (!user) {
+          return null
+        }
+
+        // Disallow login for inactive users
+        if (!user.active) {
           return null
         }
 
@@ -100,3 +105,4 @@ const { handlers } = NextAuth({
 })
 
 export const { GET, POST } = handlers
+export { auth }
