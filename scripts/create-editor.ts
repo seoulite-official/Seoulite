@@ -2,11 +2,13 @@
 import { loadEnvConfig } from "@next/env"
 loadEnvConfig(process.cwd())
 import { PrismaClient } from "@/app/generated/prisma/client"
-import { PrismaLibSql } from "@prisma/adapter-libsql"
+import { PrismaPg } from "@prisma/adapter-pg"
 import bcrypt from "bcryptjs"
 import * as readline from "readline"
 
-const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! })
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+})
 const prisma = new PrismaClient({ adapter })
 
 async function main() {
