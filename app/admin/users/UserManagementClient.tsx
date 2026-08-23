@@ -40,9 +40,15 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: A
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, role }),
     })
-    const data = await res.json()
+    const text = await res.text()
+    let data
+    try {
+      data = JSON.parse(text)
+    } catch {
+      data = { error: text || 'Server error' }
+    }
     if (res.ok) {
-      setMessage(`Invitation created. URL: ${data.inviteUrl}`)
+      setMessage(`${data.message}\n${data.inviteUrl}`)
     } else {
       setMessage(data.error || 'Error creating invitation')
     }

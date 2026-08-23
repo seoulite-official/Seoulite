@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoutButton from "./LogoutButton";
 
 export default function AdminPage() {
   return (
@@ -11,14 +12,7 @@ export default function AdminPage() {
               <span className="text-sm text-gray-600">
                 Signed in as Editor (session data would appear here)
               </span>
-              <form action="/api/auth/signout" method="POST" className="mt-2">
-                <button
-                  type="submit"
-                  className="text-sm font-medium text-red-600 hover:text-red-500"
-                >
-                  Sign out
-                </button>
-              </form>
+              <LogoutButton />
             </div>
           </div>
         </div>

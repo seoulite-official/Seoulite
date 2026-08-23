@@ -45,9 +45,18 @@ export async function POST(request: Request) {
   const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
   const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48h
 
-  const invitation = await prisma.invitation.create({
-    data: { email, role, tokenHash, expiresAt },
-  });
+  let invitation;
+  try {
+    invitation = await prisma.invitation.create({
+      data: { email, role, tokenHash, expiresAt },
+    });
+  } catch (err) {
+    if (err && typeof err === 'object' && 'code' in err && err.code === 'P2002') {
+      return NextResponse.json({ error: 'An invitation already exists for this email.' }, { status: 409 });
+    }
+    // Unexpected error
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 
   // construct invitation URL
   const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
@@ -74,7 +83,7 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ message: 'Invitation sent', invitationId: invitation.id, inviteUrl });
   } else {
-    // No email configuration – inform the admin.
-    return NextResponse.json({ error: 'RESEND_API_KEY not configured – invitation not emailed', invitationId: invitation.id, inviteUrl }, { status: 400 });
+    // No email configuration – invitation created but email not sent.
+    return NextResponse.json({ message: 'Invitation created, but email was not sent because RESEND_API_KEY is not configured.', invitationId: invitation.id, inviteUrl }, { status: 200 });
   }
 }
