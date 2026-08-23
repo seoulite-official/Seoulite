@@ -9,34 +9,10 @@ import { cn } from "../lib/cn";
 function SocialIcon({ icon }: { icon: (typeof socialLinks)[number]["icon"] }) {
   const common = "h-3.5 w-3.5 fill-current";
   switch (icon) {
-    case "facebook":
-      return (
-        <svg viewBox="0 0 24 24" className={common} aria-hidden>
-          <path d="M14 9h3V6h-3c-1.7 0-3 1.4-3 3.1V11H8v3h3v7h3v-7h3l1-3h-4V9.2c0-.1.1-.2.2-.2z" />
-        </svg>
-      );
-    case "twitter":
-      return (
-        <svg viewBox="0 0 24 24" className={common} aria-hidden>
-          <path d="M18.2 7.1c.6-.4 1.1-.9 1.5-1.5-.6.3-1.2.5-1.9.6A2.6 2.6 0 0 0 13.4 9c0 .2 0 .4.1.6-2.2-.1-4.1-1.2-5.4-2.8-.2.4-.3.8-.3 1.2 0 .9.5 1.7 1.2 2.2-.5 0-.9-.1-1.3-.4v.1c0 1.3.9 2.3 2.1 2.6-.2.1-.5.1-.7.1-.2 0-.3 0-.5-.1.3 1 1.3 1.8 2.4 1.8A5.2 5.2 0 0 1 6 16.4 7.4 7.4 0 0 0 10 17.6c4.8 0 7.4-4 7.4-7.4v-.3c.5-.4 1-.9 1.4-1.4-.5.2-1 .4-1.6.6z" />
-        </svg>
-      );
-    case "linkedin":
-      return (
-        <svg viewBox="0 0 24 24" className={common} aria-hidden>
-          <path d="M7.1 9H4.2v11h2.9V9zM5.6 4C4.6 4 3.8 4.8 3.8 5.8S4.6 7.6 5.6 7.6 7.5 6.8 7.5 5.8 6.7 4 5.6 4zM20 13.3c0-2.4-1.3-3.5-3-3.5-1.4 0-2 .8-2.4 1.3V9H12v11h2.9v-6.1c0-.3 0-.7.1-1 .3-.7.9-1.4 1.9-1.4 1.3 0 1.9 1 1.9 2.5V20H21v-6.7z" />
-        </svg>
-      );
-    case "youtube":
-      return (
-        <svg viewBox="0 0 24 24" className={common} aria-hidden>
-          <path d="M22 12.2s0-3.2-.4-4.6c-.2-.9-.9-1.6-1.8-1.8C18.4 5.4 12 5.4 12 5.4s-6.4 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 9 2 12.2 2 12.2s0 3.2.4 4.6c.2.9.9 1.6 1.8 1.8 1.4.4 7.8.4 7.8.4s6.4 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.4.4-4.6.4-4.6zM10 15.2V9.2l5.2 3-5.2 3z" />
-        </svg>
-      );
     case "instagram":
       return (
         <svg viewBox="0 0 24 24" className={common} aria-hidden>
-          <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5zm8 2H8a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3zm-4 3.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM17.4 7.1a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
+          <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5zm8 2H8a3 3 0 0 0-3 3v8a3 3 0 0 0 3-3zm-4 3.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2A1.8 1.8 0 1 0 13.8 12 1.8 1.8 0 0 0 12 10.2zM17.4 7.1a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
         </svg>
       );
   }
@@ -66,9 +42,16 @@ export function Header() {
       <div className="mx-auto flex h-[72px] max-w-7xl items-center gap-4 px-5 sm:px-8 lg:px-10">
         <Link
           href="/"
-          className="shrink-0 font-serif text-2xl font-bold tracking-[0.12em] uppercase text-white"
+          className="shrink-0 flex items-center gap-3"
         >
-          {siteConfig.name}
+          <img
+            src="/design/logo.jpg"
+            alt="Seoulite"
+            className="h-10 w-auto dark:invert transition-opacity group-hover:opacity-90"
+          />
+          <span className="text-3xl font-serif font-bold tracking-tighter text-white group-hover:opacity-90 transition-opacity">
+            Seoulite
+          </span>
         </Link>
 
         <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex">

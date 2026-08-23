@@ -1,4 +1,12 @@
 import { NextResponse, NextRequest } from 'next/server'
+import { Resend } from 'resend'
+
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+const CONTACT_FORM_RECIPIENT = process.env.CONTACT_FORM_RECIPIENT || 'admin@seoulite.local'
+
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null
+
+import { createContactMessage } from '@/app/lib/server/contactMessages';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,32 +29,27 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // In a real application, you would send an email here using a service like Resend, SendGrid, etc.
-    // For this example, we'll log the email details and return success.
-    // In production, you would uncomment and configure the email service.
+    // Send email using Resend (only if API key is configured)
+    if (resend) {
+      await resend.emails.send({
+        from: 'Seoulite Contact Form <onboarding@resend.dev>',
+        to: CONTACT_FORM_RECIPIENT,
+        subject: `New contact form submission from ${name}`,
+        replyTo: email,
+        html: `
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong> ${message}</p>
+        `,
+      })
+    } else {
+      // Fallback: log the submission if Resend is not configured
+      console.log('Contact form submission (Resend not configured):', { name, email, message })
+    }
 
-    // Example using Resend (uncomment and install resend package to use):
-    /*
-    import { Resend } from 'resend'
-    const resend = new Resend(process.env.RESEND_API_KEY)
-
-    await resend.emails.send({
-      from: 'Seoulite Contact Form <onboarding@resend.dev>',
-      to: process.env.CONTACT_FORM_RECIPIENT,
-      subject: `New contact form submission from ${name}`,
-      reply_to: email,
-      html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong> ${message}</p>
-      `,
-    })
-    */
-
-    // For development, we'll just log and return success
-    console.log('Contact form submission:', { name, email, message })
-
-    return NextResponse.json({ success: true }, { status: 200 })
+    // Save the message to the database
+      await createContactMessage({ name, email, message });
+      return NextResponse.json({ success: true }, { status: 200 })
   } catch (error) {
     console.error('Contact form error:', error)
     return NextResponse.json(

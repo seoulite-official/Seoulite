@@ -52,7 +52,7 @@ export default async function Issues({
               <ArticleCard
                 key={issue.slug}
                 href={`/issues/${issue.slug}`}
-                image={coverUrl(issue.coverImageKey) ?? fallbackCardImages[index % fallbackCardImages.length]}
+                image={coverUrl(issue.coverImageKey) ?? undefined}
                 date={formatDisplayDate(issue.date)}
                 title={issue.title || `Issue ${issue.number}`}
                 author="Seoulite Editors"
@@ -60,7 +60,10 @@ export default async function Issues({
             ))}
           </div>
         )}
-      </Container>
-    </Section>
-  );
-}
+                  <p className="mt-8 text-center">
+              <a href="https://issuu.com/sisseoulite?ps=24" className="text-[#111111] hover:underline">Click here to view our older issues</a>
+            </p>
+          </Container>
+        </Section>
+      );
+    }

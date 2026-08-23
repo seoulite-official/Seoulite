@@ -5,7 +5,7 @@ import { coverUrl, formatDisplayDate, publicationUrl } from "@/app/lib/media";
 import { ButtonLink } from "./Button";
 
 export default function EditorialHero({ latestIssue }: { latestIssue: Issue }) {
-  const image = coverUrl(latestIssue.coverImageKey) ?? "/design/banner.jpg";
+  const cover = coverUrl(latestIssue.coverImageKey);
   const pdf = publicationUrl(latestIssue.publicationKey);
   const heading = latestIssue.title || `Issue ${latestIssue.number}`;
 
@@ -13,13 +13,21 @@ export default function EditorialHero({ latestIssue }: { latestIssue: Issue }) {
     <section className="border-y border-zinc-100 bg-white">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:px-10">
         <div className="relative aspect-[4/5] overflow-hidden bg-zinc-100 sm:aspect-[5/4]">
-          <Image
-            src={image}
-            alt={heading}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-          />
+          {cover ? (
+            <Image
+              src={cover}
+              alt={heading}
+              fill
+              priority
+              loading="eager"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-zinc-200 font-serif text-6xl text-zinc-400">
+              {latestIssue.number}
+            </div>
+          )}
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8a8a8a]">

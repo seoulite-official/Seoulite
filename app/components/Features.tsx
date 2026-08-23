@@ -9,7 +9,7 @@ export function Features() {
           The magazine
         </p>
         <h2 className="mt-3 font-serif text-3xl font-bold text-[#111111] sm:text-4xl">
-          What you will find in Seoulite
+          ***What you will find in Seoulite***
         </h2>
       </div>
       <div className="grid gap-10 sm:grid-cols-3">

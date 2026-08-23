@@ -6,11 +6,14 @@ generator client {
   output   = "../app/generated/prisma"
 }
 
+
 datasource db {
   provider = "sqlite"
 }
 
+
 model Issue {
+// Existing fields remain
   id                  String   @id @default(uuid())
   slug                String   @unique
   number              Int
@@ -39,7 +42,11 @@ model Issue {
   @@index([published])
 }
 
+
 model User {
+  // Existing fields remain
+  // Existing fields remain
+  // Existing fields remain
   id        String   @id @default(uuid())
   email     String   @unique
   name      String?
@@ -49,4 +56,13 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([email])
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

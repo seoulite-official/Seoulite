@@ -4,54 +4,27 @@ import { CallToAction } from "./components/CallToAction";
 import { ArticleCard } from "./components/ArticleCard";
 import EditorialHero from "./components/EditorialHero";
 import { Container } from "./components/Container";
-import { getPublishedIssues } from "@/app/lib/server/issues";
-import { demoArticles } from "@/app/lib/issues";
-import { articleImageUrl, coverUrl, formatDisplayDate } from "@/app/lib/media";
-import { fallbackCardImages } from "./lib/content";
+import { getRecentIssues } from "@/app/lib/server/issues";
+import { coverUrl, formatDisplayDate } from "@/app/lib/media";
 import { ButtonLink } from "./components/Button";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const issues = await getPublishedIssues();
+  const issues = await getRecentIssues(4);
   const latestIssue = issues[0] ?? null;
 
-  const featuredFromArticles = issues.flatMap((issue) => {
-    const articles = demoArticles[issue.slug] ?? [];
-    return articles.map((article, index) => ({
-      href: `/issues/${issue.slug}/${article.slug}`,
-      image: articleImageUrl(article.image) ?? coverUrl(issue.coverImageKey) ?? fallbackCardImages[index % fallbackCardImages.length],
-      date: formatDisplayDate(issue.date),
-      title: article.title,
-      author: article.author,
-    }));
-  });
-
-  const featuredFromIssues = issues.map((issue, index) => ({
+  // Build cards from the actual published issues.
+  // If an issue has no cover image, ArticleCard will render a neutral placeholder automatically.
+  const featured = issues.map((issue, index) => ({
     href: `/issues/${issue.slug}`,
-    image: coverUrl(issue.coverImageKey) ?? fallbackCardImages[index % fallbackCardImages.length],
+    image: coverUrl(issue.coverImageKey) ?? undefined,
     date: formatDisplayDate(issue.date),
     title: issue.title || `Issue ${issue.number}`,
     author: "Seoulite Editors",
   }));
 
-  const featured = (featuredFromArticles.length >= 4
-    ? featuredFromArticles
-    : [...featuredFromArticles, ...featuredFromIssues]
-  ).slice(0, 4);
-
-  while (featured.length < 4) {
-    const index = featured.length;
-    featured.push({
-      href: "/about",
-      image: fallbackCardImages[index % fallbackCardImages.length],
-      date: "Coming soon",
-      title: "New stories are in production for the next issue.",
-      author: "Seoulite Editors",
-    });
-  }
-
-  const archivePreview = issues.slice(0, 8);
+  const archivePreview = issues;
 
   return (
     <>
@@ -60,8 +33,8 @@ export default async function Home() {
       <section className="bg-white py-14 sm:py-16">
         <Container>
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((card) => (
-              <ArticleCard key={`${card.href}-${card.title}`} {...card} />
+            {featured.map((card, index) => (
+              <ArticleCard key={card.href + '-' + card.title + '-' + index} {...card} />
             ))}
           </div>
         </Container>
@@ -90,9 +63,9 @@ export default async function Home() {
             <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
               {archivePreview.map((issue, index) => (
                 <ArticleCard
-                  key={issue.id}
+                  key={`${issue.id}-${index}`}
                   href={`/issues/${issue.slug}`}
-                  image={coverUrl(issue.coverImageKey) ?? fallbackCardImages[index % fallbackCardImages.length]}
+                  image={coverUrl(issue.coverImageKey) ?? undefined}
                   date={formatDisplayDate(issue.date)}
                   title={issue.title || `Issue ${issue.number}`}
                   author="Seoulite Editors"

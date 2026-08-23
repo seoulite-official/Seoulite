@@ -70,6 +70,16 @@ export default function AdminPage() {
                 Manage Issues
               </Link>
             </div>
+            <div className="bg-gray-50 p-4 border rounded-md">
+              <h3 className="font-medium text-gray-900">Messages</h3>
+              <p className="mt-2 text-sm text-gray-600">View contact form submissions.</p>
+              <Link
+                href="/admin/messages"
+                className="mt-3 inline-flex items-center rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-800"
+              >
+                View Messages
+              </Link>
+            </div>
           </div>
         </div>
       </main>

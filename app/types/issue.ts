@@ -27,4 +27,5 @@ export type IssueForm = {
   number: number
   date: string
   published?: boolean
+  description?: string
 }

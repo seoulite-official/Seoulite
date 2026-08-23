@@ -18,6 +18,8 @@ export default function EditForm({ issue }: Props) {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [publicationFile, setPublicationFile] = useState<File | null>(null)
+  const [coverFile, setCoverFile] = useState<File | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,10 +32,24 @@ export default function EditForm({ issue }: Props) {
 
     setIsSubmitting(true)
     try {
+      const formDataToSubmit = new FormData()
+      formDataToSubmit.append('number', formData.number.toString())
+      formDataToSubmit.append('slug', formData.slug)
+      formDataToSubmit.append('title', formData.title)
+      formDataToSubmit.append('date', formData.date)
+      formDataToSubmit.append('published', formData.published.toString())
+      formDataToSubmit.append('description', formData.description)
+
+      if (publicationFile) {
+        formDataToSubmit.append('publication', publicationFile)
+      }
+      if (coverFile) {
+        formDataToSubmit.append('coverImage', coverFile)
+      }
+
       const res = await fetch(`/api/admin/issues/${issue.slug}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: formDataToSubmit
       })
 
       if (!res.ok) {
@@ -146,6 +162,50 @@ export default function EditForm({ issue }: Props) {
           />
         </div>
 
+        <div className="mb-4">
+          <label htmlFor="publicationFile" className="block text-sm font-medium text-gray-700">
+            Publication PDF
+          </label>
+          <input
+            type="file"
+            id="publicationFile"
+            className="file-input file-input-bordered w-full"
+            accept="application/pdf"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                setPublicationFile(file)
+              }
+            }}
+            disabled={isSubmitting}
+          />
+          <div className="label">
+            <span className="label-text-alt">Upload the full issue as a PDF. The first page will be used as the cover image.</span>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="coverFile" className="block text-sm font-medium text-gray-700">
+            Cover Image (Optional)
+          </label>
+          <input
+            type="file"
+            id="coverFile"
+            className="file-input file-input-bordered w-full"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                setCoverFile(file)
+              }
+            }}
+            disabled={isSubmitting}
+          />
+          <div className="label">
+            <span className="label-text-alt">Optional: Upload a custom cover image. If not provided, the first page of the PDF will be used.</span>
+          </div>
+        </div>
+
         <div className="mb-6 flex items-center">
           <input
             id="published"
@@ -160,7 +220,7 @@ export default function EditForm({ issue }: Props) {
           </label>
         </div>
 
-        
+
         <div className="flex items-center justify-between">
           <button
             type="submit"

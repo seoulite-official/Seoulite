@@ -63,6 +63,7 @@ export default function About() {
         <img
           src="/design/banner.jpg"
           alt=""
+          loading="eager"
           className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
         />
         <div className="absolute inset-0 bg-black/65" aria-hidden />
@@ -81,18 +82,17 @@ export default function About() {
       <Section id="about" className="bg-white">
         <Container className="max-w-3xl">
           <p className="font-serif text-2xl italic leading-snug text-[#111111] sm:text-3xl">
-            Exploring ideas at the intersection of culture, politics, and the liberal arts.
+            ***Explore the world of journalism***
           </p>
           <div className="mt-10 space-y-6 text-base leading-relaxed text-[#444444]">
             <p>
-              Welcome to Seoulite. This space is a student-run journal made to spark conversations
-              across culture, campus, and the city. We publish essays, criticism, photography, and
-              the kinds of stories that feel urgent to the people writing them.
+              Welcome to Seoulite.
             </p>
             <p>
-              Each issue is edited and designed as a magazine — something you can read here article
-              by article, or open as a full PDF. The archive stays online so older issues remain
-              part of the conversation.
+              Seoulite is a Model United Nations (MUN) centered publications club that seeks to report on notable moments/topics discussed in the SEOMUN conference. Our club not only equips students with the necessary skills for future membership in publications like Tiger Times, but also exposes members to a deadline-driven press experience to foster core abilities and interests in journalism. Ranging from reporting, photo, and layout, our club integrates all necessary sectors of the press to provide members with an enriching experience dedicated to journalism. Meetings take place on Tuesdays and Thursdays of the first semester.
+            </p>
+            <p>
+              Explore past issues here on our official website, as an archived collection. Ranging from SEOMUN to international conferences like BEIMUN, THIMUN, and YALEMUN, past issues can be accessed through PDF files.
             </p>
           </div>
         </Container>

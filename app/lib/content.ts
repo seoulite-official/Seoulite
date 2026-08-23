@@ -4,29 +4,29 @@ export type Feature = {
 };
 
 export const heroContent = {
-  eyebrow: "Heading here",
-  title: "Hot Takes & Bold Opinions: The Stories You Can't Ignore",
+  eyebrow: "Student Journalism, On the Ground",
+  title: "Stories From the Conferences That Shape Our World",
   subtitle:
-    "Seoulite is a student-run journal of culture, campus life, and the city — essays, photography, and the conversations our community is having now.",
+    "Seoulite brings student journalism directly into the heart of MUN conferences, covering the people, debates, and ideas that shape each conference. From SEOMUN to BEIMUN, THIMUN, and YALEMUN, our members report, photograph, and design each issue to capture these experiences as they happen.",
   primaryCta: { label: "Check Now", href: "/issues" },
   secondaryCta: { label: "About Us", href: "/about" },
 } as const;
 
 export const featuresContent: Feature[] = [
   {
-    title: "Student voices",
+    title: "International, on-ground journalism",
     description:
-      "Essays and reporting written by the people living this city and this campus — not from a distance.",
+      "A direct insight into live-press coverage, covering issues from domestic and international MUN conferences.",
   },
   {
-    title: "Print and digital",
+    title: "Full cycle coverage",
     description:
-      "Each issue is designed as a magazine you can read on the site or download as a full PDF.",
+      "Explore a full-cycle coverage ranging from articles and photos to layout design, all self-produced by members of Seoulite.",
   },
   {
-    title: "An archive that grows",
+    title: "An active archive",
     description:
-      "Past issues stay online so new readers can find the stories that still matter.",
+      "Our website is an active archive of our accomplishments—as many articles there are now, we plan on writing more in the coming future. Follow our journey as we continue to build an active archive of student journalism.",
   },
 ];
 

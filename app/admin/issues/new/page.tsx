@@ -11,11 +11,17 @@ export default function NewIssuePage() {
     title: '',
     number: 0,
     date: '',
-    published: false
+    published: false,
+    description: ''
   })
+
+  // Ensure published is never undefined
+  const published = formData.published ?? false
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [numberStr, setNumberStr] = useState<string>(formData.number.toString())
+  const [publicationFile, setPublicationFile] = useState<File | null>(null)
+  const [coverFile, setCoverFile] = useState<File | null>(null)
 
   const numberValue = numberStr === '' ? '' : Number(numberStr)
 
@@ -33,15 +39,24 @@ export default function NewIssuePage() {
 
     setIsLoading(true)
     try {
+      const formDataToSubmit = new FormData()
+      formDataToSubmit.append('slug', formData.slug)
+      formDataToSubmit.append('title', formData.title)
+      formDataToSubmit.append('number', num.toString())
+      formDataToSubmit.append('date', formData.date)
+      formDataToSubmit.append('published', published.toString())
+      formDataToSubmit.append('description', formData.description || '')
+
+      if (publicationFile) {
+        formDataToSubmit.append('publication', publicationFile)
+      }
+      if (coverFile) {
+        formDataToSubmit.append('coverImage', coverFile)
+      }
+
       const response = await fetch('/api/admin/issues', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          number: num
-        })
+        body: formDataToSubmit
       })
 
       if (!response.ok) {
@@ -116,6 +131,62 @@ export default function NewIssuePage() {
             onChange={(e) => setFormData({...formData, date: e.target.value})}
             disabled={isLoading}
           />
+        </div>
+
+        <div className="form-control mb-4">
+          <label className="label">
+            <span className="label-text">Description</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered"
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            disabled={isLoading}
+            rows={4}
+          />
+        </div>
+
+        <div className="form-control mb-4">
+          <label className="label">
+            <span className="label-text">Publication PDF <span className="text-red-500">*</span></span>
+          </label>
+          <input
+            type="file"
+            className="file-input file-input-bordered w-full"
+            accept="application/pdf"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                setPublicationFile(file)
+              }
+            }}
+            disabled={isLoading}
+            required
+          />
+          <div className="label">
+            <span className="label-text-alt">Upload the full issue as a PDF. The first page will be used as the cover image.</span>
+          </div>
+        </div>
+
+        <div className="form-control mb-4">
+          <label className="label">
+            <span className="label-text">Cover Image (Optional)</span>
+          </label>
+          <input
+            type="file"
+            className="file-input file-input-bordered w-full"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                setCoverFile(file)
+              }
+            }}
+            disabled={isLoading}
+          />
+          <div className="label">
+            <span className="label-text-alt">Optional: Upload a custom cover image. If not provided, the first page of the PDF will be used.</span>
+          </div>
         </div>
 
         <div className="form-control mb-4">

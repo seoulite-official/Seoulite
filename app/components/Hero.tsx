@@ -12,6 +12,7 @@ export function Hero() {
         alt="The Seoulite team gathered on campus steps"
         fill
         priority
+        loading="eager"
         sizes="100vw"
         className="object-cover object-[center_38%]"
       />
