@@ -63,11 +63,11 @@ async function main() {
         email,
         name: name || null,
         password: hashedPassword,
-        role: "EDITOR" // Default role for editors
+        role: "ADMIN"
       }
     })
 
-    console.log("\n✅ Editor account created successfully!")
+    console.log("\n✅ Admin account created successfully!")
     console.log(`   ID: ${user.id}`)
     console.log(`   Email: ${user.email}`)
     console.log(`   Name: ${user.name || "(not set)"}`)
