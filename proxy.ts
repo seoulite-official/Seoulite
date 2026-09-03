@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // For now, we'll implement a simple version that checks for cookies
   // A more robust implementation would require the @auth/core token utilities
   // which we determined aren't available in the current version
@@ -9,7 +9,11 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Protect admin routes - check for auth cookie
-if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+if (
+  pathname.startsWith("/admin") &&
+  pathname !== "/admin/login" &&
+  pathname !== "/admin/invite"
+) {
     const hasAuthCookie =
       request.cookies.has("__Secure-authjs.session-token") ||
       request.cookies.has("authjs.session-token") ||
