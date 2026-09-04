@@ -1,8 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { getIssues } from '@/app/lib/server/issues'
 import { createIssue } from '@/app/lib/server/issues'
-import fs from 'fs/promises'
-import path from 'path'
+import { put } from '@vercel/blob'
 import type { Prisma } from '@/app/generated/prisma'
 
 /**
@@ -49,18 +48,17 @@ export async function POST(request: NextRequest) {
   }
 
   // Helper to store an uploaded file on disk and return its public path.
-  async function storeUpload(file: File, folder: string): Promise<string> {
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder)
-    await fs.mkdir(uploadDir, { recursive: true })
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
-    const safeName = file.name.replace(/\s+/g, '-')
-    const filename = `${uniqueSuffix}-${safeName}`
-    const filePath = path.join(uploadDir, filename)
-    const buffer = Buffer.from(await file.arrayBuffer())
-    await fs.writeFile(filePath, buffer)
-    // Return the public URL that can be used with the media helpers.
-    return `/uploads/${folder}/${filename}`
-  }
+async function storeUpload(file: File, folder: string): Promise<string> {
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  const safeName = file.name.replace(/\s+/g, '-')
+  const filename = `${folder}/${uniqueSuffix}-${safeName}`
+
+  const blob = await put(filename, file, {
+    access: 'public',
+  })
+
+  return blob.url
+}
 
   // Handle PDF (publication) upload.
   const publicationFile = form.get('publication') as File | null
