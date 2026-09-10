@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { upload } from '@vercel/blob/client'
 import type { Issue } from '@/app/types/issue'
 
 type Props = { issue: Issue }
@@ -32,24 +33,49 @@ export default function EditForm({ issue }: Props) {
 
     setIsSubmitting(true)
     try {
-      const formDataToSubmit = new FormData()
-      formDataToSubmit.append('number', formData.number.toString())
-      formDataToSubmit.append('slug', formData.slug)
-      formDataToSubmit.append('title', formData.title)
-      formDataToSubmit.append('date', formData.date)
-      formDataToSubmit.append('published', formData.published.toString())
-      formDataToSubmit.append('description', formData.description)
+      let publicationUrl = ''
+      let coverImageUrl = ''
 
       if (publicationFile) {
-        formDataToSubmit.append('publication', publicationFile)
+        const blob = await upload(
+          `publications/${publicationFile.name}`,
+          publicationFile,
+          {
+            access: 'public',
+            handleUploadUrl: '/api/admin/blob-upload',
+            multipart: true,
+          }
+        )
+        publicationUrl = blob.url
       }
+
       if (coverFile) {
-        formDataToSubmit.append('coverImage', coverFile)
+        const blob = await upload(
+          `covers/${coverFile.name}`,
+          coverFile,
+          {
+            access: 'public',
+            handleUploadUrl: '/api/admin/blob-upload',
+          }
+        )
+        coverImageUrl = blob.url
       }
 
       const res = await fetch(`/api/admin/issues/${issue.slug}`, {
         method: 'PUT',
-        body: formDataToSubmit
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          slug: formData.slug,
+          title: formData.title,
+          number: formData.number,
+          date: formData.date,
+          published: formData.published,
+          description: formData.description,
+          publicationUrl: publicationUrl || undefined,
+          coverImageUrl: coverImageUrl || undefined,
+        }),
       })
 
       if (!res.ok) {

@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from 'next/navigation'
+import { upload } from '@vercel/blob/client'
 import { useState } from 'react'
+
 import { IssueForm } from '@/app/types/issue'
 
 export default function NewIssuePage() {
@@ -39,38 +41,63 @@ export default function NewIssuePage() {
 
     setIsLoading(true)
     try {
-      const formDataToSubmit = new FormData()
-      formDataToSubmit.append('slug', formData.slug)
-      formDataToSubmit.append('title', formData.title)
-      formDataToSubmit.append('number', num.toString())
-      formDataToSubmit.append('date', formData.date)
-      formDataToSubmit.append('published', published.toString())
-      formDataToSubmit.append('description', formData.description || '')
+let publicationUrl = ''
+let coverImageUrl = ''
 
-      if (publicationFile) {
-        formDataToSubmit.append('publication', publicationFile)
-      }
-      if (coverFile) {
-        formDataToSubmit.append('coverImage', coverFile)
-      }
+if (publicationFile) {
+  const blob = await upload(
+    `publications/${publicationFile.name}`,
+    publicationFile,
+    {
+      access: 'public',
+      handleUploadUrl: '/api/admin/blob-upload',
+    }
+  )
 
-      const response = await fetch('/api/admin/issues', {
-        method: 'POST',
-        body: formDataToSubmit
-      })
+  publicationUrl = blob.url
+}
 
+if (coverFile) {
+  const blob = await upload(
+    `covers/${coverFile.name}`,
+    coverFile,
+    {
+      access: 'public',
+      handleUploadUrl: '/api/admin/blob-upload',
+    }
+  )
+
+  coverImageUrl = blob.url
+}
+const response = await fetch('/api/admin/issues', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    slug: formData.slug,
+    title: formData.title,
+    number: num,
+    date: formData.date,
+    published,
+    description: formData.description || '',
+    publicationUrl,
+    coverImageUrl,
+  }),
+})
       if (!response.ok) {
-        throw new Error('Failed to create issue')
+        const data = await response.json().catch(() => null)
+        throw new Error(data?.error || 'Failed to create issue')
       }
 
       router.push('/admin/issues')
+      router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating issue')
+      setError(err instanceof Error ? err.message : 'Failed to create issue')
     } finally {
       setIsLoading(false)
     }
   }
-
   return (
     <div className="min-h-screen p-8">
       <h1 className="text-2xl font-bold mb-4">New Issue</h1>
